@@ -1,28 +1,28 @@
 /**
- * 判断一个值是否是非16进制实数
- * @param value 需要判断是否是数字的值
+ * 判断一个值是否是数字
+ * @param num 需要判断是否是数字的值
  * @param isStrict 是否采用严格模式
  */
-export const isNumberic = (value: any, isStrict?: boolean): boolean => {
+export const isNumberic = (num: any, isStrict?: boolean): boolean => {
   if (isStrict) {
-    return !Number.isNaN(value) && Number.isFinite(value)
+    if (typeof num === 'number' && !isNaN(num)) {
+      return true
+    } else {
+      return false
+    }
+  } else {
+    return !isNaN(parseFloat(num)) && isFinite(num)
   }
-  const type = typeof value
-  return (type === 'number' || type === 'string')
-    // parseFloat NaNs numeric-cast false positives ("")
-		// ...but misinterprets leading-number strings, particularly hex literals ("0x...")
-		// subtraction forces infinities to NaN
-    && !Number.isNaN(value - parseFloat(value))
 }
 
 /**
  * 判断一个值是否是数字且是否在给定区间内（闭区间）
- * @param value 需要判断是否在给定区间内的值
+ * @param num 需要判断是否在给定区间内的值
  * @param min 最小值
  * @param max 最大值
  */
-export const isNumbericInRange = (value: any, min: number, max: number): boolean => {
-  let isNumber: boolean = isNumberic(value)
+export const isNumbericInRange = (num: any, min: number, max: number): boolean => {
+  let isNumber: boolean = isNumberic(num)
   let isMinMaxValid = isNumberic(min) && isNumberic(max) && +max > +min
   if (!isNumber) {
     console.warn('验证的参数不是数字')
@@ -32,7 +32,7 @@ export const isNumbericInRange = (value: any, min: number, max: number): boolean
     console.warn('验证区间（最大值或最小值）无效')
     return false
   }
-  return +value >= +min && +value <= +max
+  return +num >= +min && +num <= +max
 }
 
 /**

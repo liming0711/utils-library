@@ -9,10 +9,8 @@ export const isNumberic = (value: any, isStrict?: boolean): boolean => {
   }
   const type = typeof value
   return (type === 'number' || type === 'string')
-    // parseFloat NaNs numeric-cast false positives ("")
-		// ...but misinterprets leading-number strings, particularly hex literals ("0x...")
-		// subtraction forces infinities to NaN
     && !Number.isNaN(value - parseFloat(value))
+  return !isNaN(parseFloat(value)) && isFinite(value)
 }
 
 /**
